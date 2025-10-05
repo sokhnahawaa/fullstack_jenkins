@@ -58,7 +58,7 @@ stages {
 
 post {
     success {
-        emailext (
+        emailext(
             subject: " BUILD REUSSI - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: """<html>
                         <body>
@@ -75,7 +75,7 @@ post {
     }
 
     failure {
-        emailext (
+        emailext(
             subject: " BUILD ECHOUE - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: """<html>
                         <body>
