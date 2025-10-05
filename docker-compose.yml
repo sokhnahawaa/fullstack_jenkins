@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27018:27017"   # évite le conflit avec ton MongoDB local
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/smartphonesDB
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./front
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:5000/api/smartphones
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
