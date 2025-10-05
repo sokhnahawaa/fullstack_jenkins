@@ -67,7 +67,7 @@ post {
                             <p>Consultez les logs ici : <a href=\"${env.BUILD_URL}\">${env.BUILD_URL}</a></p>
                         </body>
                      </html>""",
-            to: ['obympeespoir@gmail.com', 'oldpipa16@gmail.com', 'ndiayekhardiata2024@gmail.com', 'dangawa2000@gmail.com'],
+            to: 'dangawa2000@gmail.com',
             from: 'dangawa2000@gmail.com',
             replyTo: 'dangawa2000@gmail.com',
             mimeType: 'text/html'
