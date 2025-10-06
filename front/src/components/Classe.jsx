@@ -116,7 +116,7 @@ function Classe() {
 
   return (
     <div>
-      <div className="flex items-center justify-between bg-blue-800 text-white">
+      <div className="flex items-center justify-between bg-black-800 text-white">
         {/* Logo à gauche */}
         <div className="flex items-center gap-2 font-bold text-xl">
           <img
