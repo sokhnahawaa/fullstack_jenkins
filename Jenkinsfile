@@ -11,6 +11,30 @@ DELETE_CODE = "123"
 }
 
 stages {
+
+     stage('Analyse SonarQube') {
+            steps {
+                withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube
+                    withCredentials([string(credentialsId: 'jenkins-token', variable: 'SONAR_TOKEN')]) {
+                        sh '''
+                            sonar-scanner \
+                            -Dsonar.projectKey=Depot_Jenkins \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://172.17.0.3:9000 \
+                            -Dsonar.login=$SONAR_TOKEN
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
     stage('BUILD IMAGES DOCKER') {
         parallel {
             stage('Build front') {
