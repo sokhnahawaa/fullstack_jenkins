@@ -15,7 +15,7 @@ stages {
      stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube
-                    withCredentials([string(credentialsId: 'jenkins-token', variable: 'SONAR_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
                         sh '''
                             sonar-scanner \
                             -Dsonar.projectKey=Depot_Jenkins \
