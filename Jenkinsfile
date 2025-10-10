@@ -17,7 +17,7 @@ stages {
                 withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube
                     withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
                         sh '''
-                            /opt/sonar-scanner/bin/sonar-scanner \
+                            sonar-scanner \
                             -Dsonar.projectKey=Depot_Jenkins \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://172.17.0.3:9000 \
