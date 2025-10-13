@@ -16,7 +16,8 @@ pipeline {
             agent {
                 docker {
                     image 'sonarsource/sonar-scanner-cli:latest'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    // On connecte le conteneur du scanner au réseau de Jenkins/SonarQube
+                    args '--network jenkins-docker_default -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
