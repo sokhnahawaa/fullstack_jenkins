@@ -59,15 +59,10 @@ pipeline {
 
       stage('LOGIN TO DOCKER HUB') {
     steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub-credentials-id', 
-            usernameVariable: 'DOCKERHUB_USR', 
-            passwordVariable: 'DOCKERHUB_PSW')]) {
-            
-            bat 'echo %DOCKERHUB_PSW% | docker login -u %DOCKERHUB_USR% --password-stdin'
-        }
-    }
-}
+        bat 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
+      }
+     }
+
 
 
         stage('PUSH IMAGES') {
