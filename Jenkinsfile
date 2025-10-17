@@ -83,28 +83,33 @@ pipeline {
         //     }
         // }
 
+        
         stage('Deploy to Kubernetes') {
-            steps {
-                withKubeConfig([credentialsId: 'idkubernetes']) {
-                    // Déployer MongoDB
-                    bat "kubectl apply -f k8s/mongo-deployment.yaml"
-                    bat "kubectl apply -f k8s/mongo-service.yaml"
+    steps {
+        bat """
+        REM Assurer que Minikube est démarré
+        minikube start
 
-                    // Déployer backend
-                    bat "kubectl apply -f k8s/back-deployment.yaml"
-                    bat "kubectl apply -f k8s/back-service.yaml"
+        REM Déployer MongoDB
+        minikube kubectl -- apply -f k8s/mongo-deployment.yaml
+        minikube kubectl -- apply -f k8s/mongo-service.yaml
 
-                    // Déployer frontend
-                    bat "kubectl apply -f k8s/front-deployment.yaml"
-                    bat "kubectl apply -f k8s/front-service.yaml"
+        REM Déployer backend
+        minikube kubectl -- apply -f k8s/back-deployment.yaml
+        minikube kubectl -- apply -f k8s/back-service.yaml
 
-                    // Vérifier que les pods sont Running
-                    bat "kubectl rollout status deployment/mongo"
-                    bat "kubectl rollout status deployment/backend"
-                    bat "kubectl rollout status deployment/frontend"
-                }
-            }
-        }
+        REM Déployer frontend
+        minikube kubectl -- apply -f k8s/front-deployment.yaml
+        minikube kubectl -- apply -f k8s/front-service.yaml
+
+        REM Vérifier que les pods sont Running
+        minikube kubectl -- rollout status deployment/mongo
+        minikube kubectl -- rollout status deployment/backend
+        minikube kubectl -- rollout status deployment/frontend
+        """
+    }
+}
+
     }
 
     post {
