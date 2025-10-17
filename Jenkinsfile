@@ -23,7 +23,7 @@ pipeline {
         //     steps {
         //         withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube configuré dans Jenkins
         //             withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
-        //                 sh '''
+        //                 bat '''
         //                     sonar-scanner \
         //                         -Dsonar.projectKey=Depot_Jenkins \
         //                         -Dsonar.sources=. \
@@ -42,7 +42,7 @@ pipeline {
                 stage('Build front') {
                     steps {
                         dir('front') {
-                            sh "docker build . -t soxnahawaa/jenkins_front:${IMAGE_TAG} -t soxnahawaa/jenkins_front:${LASTEST_TAG}"
+                            bat "docker build . -t soxnahawaa/jenkins_front:${IMAGE_TAG} -t soxnahawaa/jenkins_front:${LASTEST_TAG}"
                         }
                     }
                 }
@@ -50,7 +50,7 @@ pipeline {
                 stage('Build backend') {
                     steps {
                         dir('backend') {
-                            sh "docker build . -t soxnahawaa/jenkins_backend:${IMAGE_TAG} -t soxnahawaa/jenkins_backend:${LASTEST_TAG}"
+                            bat "docker build . -t soxnahawaa/jenkins_backend:${IMAGE_TAG} -t soxnahawaa/jenkins_backend:${LASTEST_TAG}"
                         }
                     }
                 }
@@ -59,13 +59,13 @@ pipeline {
 
         stage('LOGIN TO DOCKER HUB') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
         stage('PUSH IMAGES') {
             steps {
-                sh """
+                bat """
                     docker push soxnahawaa/jenkins_front:${IMAGE_TAG}
                     docker push soxnahawaa/jenkins_front:${LASTEST_TAG}
                     docker push soxnahawaa/jenkins_backend:${IMAGE_TAG}
@@ -76,8 +76,8 @@ pipeline {
 
         // stage('Deploy') {
         //     steps {
-        //         sh 'docker compose down'
-        //         sh 'docker compose up -d'
+        //         bat 'docker compose down'
+        //         bat 'docker compose up -d'
         //     }
         // }
 
@@ -85,21 +85,21 @@ pipeline {
             steps {
                 withKubeConfig([credentialsId: 'idkubernetes']) {
                     // Déployer MongoDB
-                    sh "kubectl apply -f k8s/mongo-deployment.yaml"
-                    sh "kubectl apply -f k8s/mongo-service.yaml"
+                    bat "kubectl apply -f k8s/mongo-deployment.yaml"
+                    bat "kubectl apply -f k8s/mongo-service.yaml"
 
                     // Déployer backend
-                    sh "kubectl apply -f k8s/back-deployment.yaml"
-                    sh "kubectl apply -f k8s/back-service.yaml"
+                    bat "kubectl apply -f k8s/back-deployment.yaml"
+                    bat "kubectl apply -f k8s/back-service.yaml"
 
                     // Déployer frontend
-                    sh "kubectl apply -f k8s/front-deployment.yaml"
-                    sh "kubectl apply -f k8s/front-service.yaml"
+                    bat "kubectl apply -f k8s/front-deployment.yaml"
+                    bat "kubectl apply -f k8s/front-service.yaml"
 
                     // Vérifier que les pods sont Running
-                    sh "kubectl rollout status deployment/mongo"
-                    sh "kubectl rollout status deployment/backend"
-                    sh "kubectl rollout status deployment/frontend"
+                    bat "kubectl rollout status deployment/mongo"
+                    bat "kubectl rollout status deployment/backend"
+                    bat "kubectl rollout status deployment/frontend"
                 }
             }
         }
@@ -141,7 +141,7 @@ pipeline {
         }
 
         always {
-            sh 'docker logout || true'
+            bat 'docker logout || true'
         }
     }
 }
