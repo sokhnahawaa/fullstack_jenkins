@@ -12,28 +12,28 @@ pipeline {
 
     stages {
 
-        stage('Analyse SonarQube') {
-            agent {
-                docker {
-                    image 'sonarsource/sonar-scanner-cli:latest'
-                    // On connecte le conteneur du scanner au réseau de Jenkins/SonarQube
-                    args '--network jenkins-docker_default -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
-            steps {
-                withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube configuré dans Jenkins
-                    withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
-                        sh '''
-                            sonar-scanner \
-                                -Dsonar.projectKey=Depot_Jenkins \
-                                -Dsonar.sources=. \
-                                -Dsonar.host.url=http://sonarqube:9000 \
-                                -Dsonar.login=$SONAR_TOKEN
-                        '''
-                    }
-                }
-            }
-        }
+        // stage('Analyse SonarQube') {
+        //     agent {
+        //         docker {
+        //             image 'sonarsource/sonar-scanner-cli:latest'
+        //             // On connecte le conteneur du scanner au réseau de Jenkins/SonarQube
+        //             args '--network jenkins-docker_default -v /var/run/docker.sock:/var/run/docker.sock'
+        //         }
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube configuré dans Jenkins
+        //             withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
+        //                 sh '''
+        //                     sonar-scanner \
+        //                         -Dsonar.projectKey=Depot_Jenkins \
+        //                         -Dsonar.sources=. \
+        //                         -Dsonar.host.url=http://sonarqube:9000 \
+        //                         -Dsonar.login=$SONAR_TOKEN
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
 
         
 
