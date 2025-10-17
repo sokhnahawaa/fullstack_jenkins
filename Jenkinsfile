@@ -8,11 +8,13 @@ pipeline {
         PORT = "5000"
         MONGO_URI = "mongodb://mongodb:27017/smartphoneDB"
         DELETE_CODE = "123"
+        // 🧩 Chemin vers le kubeconfig de ton compte Windows (ton profil utilisateur)
+        KUBECONFIG = "C:\\Users\\HP\\.kube\\config"
     }
 
     stages {
 
-        // stage('Analyse SonarQube') {
+        // stage('Analyse SonarQube' {
         //     agent {
         //         docker {
         //             image 'sonarsource/sonar-scanner-cli:latest'
@@ -84,31 +86,38 @@ pipeline {
         // }
 
         
-        stage('Deploy to Kubernetes') {
-    steps {
-        bat """
-        REM Assurer que Minikube est démarré
-        minikube start
+        
 
-        REM Déployer MongoDB
-        minikube kubectl -- apply -f k8s/mongo-deployment.yaml
-        minikube kubectl -- apply -f k8s/mongo-service.yaml
+               stage('Deploy to Kubernetes') {
+            steps {
+                // 🔑 on s’assure d’utiliser ton kubeconfig utilisateur
+                withEnv(["KUBECONFIG=${env.KUBECONFIG}"]) {
+                    bat """
+                    REM ✅ Vérifier l’accès au cluster
+                    kubectl config view
+                    kubectl get nodes
 
-        REM Déployer backend
-        minikube kubectl -- apply -f k8s/back-deployment.yaml
-        minikube kubectl -- apply -f k8s/back-service.yaml
+                    REM ✅ Démarrer Minikube s’il n’est pas déjà actif
+                    minikube status || minikube start
 
-        REM Déployer frontend
-        minikube kubectl -- apply -f k8s/front-deployment.yaml
-        minikube kubectl -- apply -f k8s/front-service.yaml
+                    REM ✅ Déploiement MongoDB
+                    kubectl apply -f k8s/mongo-deployment.yaml
+                    kubectl apply -f k8s/mongo-service.yaml
 
-        REM Vérifier que les pods sont Running
-        minikube kubectl -- rollout status deployment/mongo
-        minikube kubectl -- rollout status deployment/backend
-        minikube kubectl -- rollout status deployment/frontend
-        """
-    }
-}
+                    REM ✅ Déploiement backend
+                    kubectl apply -f k8s/back-deployment.yaml
+                    kubectl apply -f k8s/back-service.yaml
+
+                    REM ✅ Déploiement frontend
+                    kubectl apply -f k8s/front-deployment.yaml
+                    kubectl apply -f k8s/front-service.yaml
+
+                    REM ✅ Vérifier que tout tourne
+                    kubectl get pods -A
+                    """
+                }
+            }
+        }
 
     }
 
