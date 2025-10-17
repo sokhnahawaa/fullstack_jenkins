@@ -74,10 +74,33 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        // stage('Deploy') {
+        //     steps {
+        //         sh 'docker compose down'
+        //         sh 'docker compose up -d'
+        //     }
+        // }
+
+        stage('Deploy to Kubernetes') {
             steps {
-                sh 'docker compose down'
-                sh 'docker compose up -d'
+                withKubeConfig([credentialsId: 'idkubernetes']) {
+                    // Déployer MongoDB
+                    sh "kubectl apply -f k8s/mongo-deployment.yaml"
+                    sh "kubectl apply -f k8s/mongo-service.yaml"
+
+                    // Déployer backend
+                    sh "kubectl apply -f k8s/back-deployment.yaml"
+                    sh "kubectl apply -f k8s/back-service.yaml"
+
+                    // Déployer frontend
+                    sh "kubectl apply -f k8s/front-deployment.yaml"
+                    sh "kubectl apply -f k8s/front-service.yaml"
+
+                    // Vérifier que les pods sont Running
+                    sh "kubectl rollout status deployment/mongo"
+                    sh "kubectl rollout status deployment/backend"
+                    sh "kubectl rollout status deployment/frontend"
+                }
             }
         }
     }
