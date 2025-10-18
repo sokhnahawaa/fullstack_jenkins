@@ -5,7 +5,8 @@ import DetaillerSmartphone from "./DetaillerSmartphone.jsx";
 import EditerSmartphone from "./EditerSmartphone.jsx";
 
 // Backend Express
-const API_BASE = "http://localhost:5000/api/smartphones";
+const API_BASE = "http://172.17.0.2:30001/api/smartphones";
+
 
 function Classe() {
   const [smartphones, setSmartphones] = useState([]);
