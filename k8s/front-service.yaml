@@ -7,9 +7,7 @@ spec:
   selector:
     app: frontend
   ports:
-  - port: 80          # Port externe du service
-    targetPort: 80    # Port du container Nginx
-    nodePort: 30002   # Port NodePort
-#    port: 5173
-#    targetPort: 5173
+    - port: 80          # Port externe du service
+      targetPort: 5173  # Port du container Vite
+      nodePort: 30002   # Port NodePort
   type: NodePort
