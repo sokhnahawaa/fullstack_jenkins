@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: backend   # Nom du déploiement
 spec:
-  replicas: 1     # Nombre de pods backend à exécuter
+  replicas: 3     # Nombre de pods backend à exécuter
   selector:
     matchLabels:
       app: backend   # Permet d’identifier les pods gérés par ce déploiement
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend   # Nom du conteneur
-        image: seynabou02/express-backend:latest   # Image Docker à déployer
+        image: Hawaakub/express-backend:latest   # Image Docker à déployer
         ports:
         - containerPort: 5000   # Port exposé dans le conteneur
         env:
