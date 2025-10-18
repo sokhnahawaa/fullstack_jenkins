@@ -6,8 +6,7 @@ import EditerSmartphone from "./EditerSmartphone.jsx";
 
 // Backend Express
 
-const API_BASE = "http://127.0.0.1:5000/api/smartphones";
-
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/smartphones";
 
 function Classe() {
   const [smartphones, setSmartphones] = useState([]);
