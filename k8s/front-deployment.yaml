@@ -21,4 +21,4 @@ spec:
         - containerPort: 80    # Port exposé par le conteneur (Nginx)
         env:
         - name: VITE_API_URL  
-          value:"http://170.17.0.2:30001/api"  # URL vers le backend via NodePort
+          value:"http://172.17.0.2:30001/api"  # URL vers le backend via NodePort
