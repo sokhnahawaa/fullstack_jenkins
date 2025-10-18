@@ -1,50 +1,46 @@
-server {
-    listen 80;
-    server_name _;
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-    root /usr/share/nginx/html;
-    index index.html;
-
-    # Gzip compression
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-    # Cache pour les assets statiques
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
+export default defineConfig(({ mode }) => ({
+  plugins: [react()],
+  
+  // Configuration pour le développement
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      }
     }
-
-    # Toutes les routes frontend pointent vers index.html (SPA)
-    location / {
-        try_files $uri $uri/ /index.html;
+  },
+  
+  // Configuration pour la preview
+  preview: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+  },
+  
+  // Configuration build pour la production
+  build: {
+    outDir: 'dist',
+    sourcemap: mode === 'development',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['react-router-dom']
+        }
+      }
     }
-
-    # Proxy pour le backend
-    location /api/ {
-        proxy_pass http://backend-service:5000/;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-        proxy_connect_timeout 30s;
-        proxy_send_timeout 30s;
-        proxy_read_timeout 30s;
-    }
-
-    # Health check
-    location /health {
-        access_log off;
-        return 200 "healthy\n";
-        add_header Content-Type text/plain;
-    }
-
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-}
+  },
+  
+  // Définition des variables d'environnement
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(mode)
+  }
+}))
