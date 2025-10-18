@@ -8,6 +8,7 @@ import EditerSmartphone from "./EditerSmartphone.jsx";
 const API_BASE = "http://172.17.0.2:30001/api/smartphones";
 
 
+
 function Classe() {
   const [smartphones, setSmartphones] = useState([]);
   const [section, setSection] = useState("list"); // list | add | detail | edit
