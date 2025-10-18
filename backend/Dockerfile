@@ -12,7 +12,7 @@ RUN npm install
 
 # Copie le reste du code source
 COPY . .
-
+COPY .env ./
 
 # Expose le port utilisé par l'application
 EXPOSE 5000
