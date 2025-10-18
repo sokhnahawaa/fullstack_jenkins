@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend   # Nom du conteneur
-        image: Hawaakub/express-backend:latest   # Image Docker à déployer
+        image: soxnahawaa/express-backend:latest   # Image Docker à déployer
         ports:
         - containerPort: 5000   # Port exposé dans le conteneur
         env:
