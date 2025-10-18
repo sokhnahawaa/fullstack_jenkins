@@ -1,16 +1,14 @@
-FROM node:20
-
+# Étape 1 : Build React
+FROM node:20 AS build
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
-
 COPY . .
-
-# Build pour production
 RUN npm run build
 
-EXPOSE 5173
-
-# Serveur de preview sur toutes les interfaces
-CMD ["npm", "run", "dev"]
+# Étape 2 : Servir avec Nginx
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
