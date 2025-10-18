@@ -22,11 +22,9 @@ RUN npm run build
 # Étape 2 : serveur Nginx pour servir les fichiers buildés
 FROM nginx:alpine
 
-# Copier les fichiers buildés dans le dossier nginx
-COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copier la config nginx (optionnel, pour gérer SPA)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+
 
 # Exposer le port 80
 EXPOSE 80
