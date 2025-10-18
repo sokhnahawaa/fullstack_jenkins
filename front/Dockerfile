@@ -1,33 +1,24 @@
-# Étape 1 : build
-FROM node:22.18.0-alpine AS build
+# Utilise une image Node.js officielle avec Alpine (plus légère)
+FROM node:22.18.0-alpine
 
+# Crée le répertoire de l'application
 WORKDIR /app
 
-# Copier les fichiers package d'abord
+# Copie les fichiers de configuration du package
 COPY package*.json ./
 
-# Installer les dépendances
+# Installe les dépendances 
 RUN npm install
 
-# Copier le code source
+# Copie le reste du code source
 COPY . .
+COPY .env ./
 
-# Passer l'URL du backend au moment du build - CORRIGÉ pour Vite
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+# Expose le port utilisé par l'application
+EXPOSE 5000
 
-# Construire le frontend en statique
-RUN npm run build
+# Définit la variable d'environnement pour NODE_ENV
+ENV NODE_ENV=production
 
-# Étape 2 : serveur Nginx pour servir les fichiers buildés
-FROM nginx:alpine
-
-
-
-
-
-# Exposer le port 80
-EXPOSE 80
-
-# Lancer nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Commande pour démarrer l'application
+CMD ["npm", "start"]
