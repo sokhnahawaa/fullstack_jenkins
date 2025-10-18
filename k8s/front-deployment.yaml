@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: soxnahawaa/jenkins_front:latest   # Image Docker du frontend
+        image: soxnahawaa/jenkins_front:latest   # Image Docker du frontend (React)
         ports:
-        - containerPort: 80    # Port exposé par le conteneur (nginx ou serveur HTTP)
+        - containerPort: 80    # Port exposé par le conteneur (Nginx)
         env:
         - name: VITE_API_URL  
-          value: "http://172.17.0.2:30001/api"  # URL du backend via NodePort
+          value: "http://backend-service:5000/api"  # Appel du backend via le service K8s
