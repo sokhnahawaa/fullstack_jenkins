@@ -1,8 +1,9 @@
-# k8s/back-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend   # Nom du déploiement
+  labels:
+    app: backend
 spec:
   replicas: 3     # Nombre de pods backend à exécuter
   selector:
