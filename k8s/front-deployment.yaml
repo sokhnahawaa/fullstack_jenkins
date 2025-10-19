@@ -21,4 +21,5 @@ spec:
         - containerPort: 80    # Port exposé par le conteneur (Nginx)
         env:
         - name: VITE_API_URL  
-          value: "http://backend-service:5000/api"  # ✅ Utilise le nom du service Kubernetes
+          value: "http://backend-service:5000/api/smartphones"  # ✅ Utilise le nom du service Kubernetes
+          
