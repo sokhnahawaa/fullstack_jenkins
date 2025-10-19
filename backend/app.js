@@ -64,12 +64,14 @@ app.get('/', (req, res) => {
 app.use('/api', smartphoneRoutes);
 
 // Middleware 404
-app.use('*', (req, res) => {
-  res.status(404).json({ 
+// Middleware 404 (corrigé)
+app.use((req, res) => {
+  res.status(404).json({
     error: 'Route not found',
     path: req.originalUrl
   });
 });
+
 
 // Middleware de gestion d'erreurs
 app.use((err, req, res, next) => {
