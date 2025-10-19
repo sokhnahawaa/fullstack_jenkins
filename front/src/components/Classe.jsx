@@ -5,7 +5,8 @@ import DetaillerSmartphone from "./DetaillerSmartphone.jsx";
 import EditerSmartphone from "./EditerSmartphone.jsx";
 
 // URL de l'API - s'adapte selon l'environnement
-const API_BASE = import.meta.env.VITE_API_URL || "http://backend.local/api/smartphones";
+const API_BASE = import.meta.env.VITE_API_URL || "http://backend-service:5000/api/smartphones";
+
 
 
 
