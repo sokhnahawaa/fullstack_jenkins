@@ -5,7 +5,8 @@ import DetaillerSmartphone from "./DetaillerSmartphone.jsx";
 import EditerSmartphone from "./EditerSmartphone.jsx";
 
 // URL de l'API - s'adapte selon l'environnement
-const  API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = import.meta.env.VITE_API_URL;
+
 
 
 
