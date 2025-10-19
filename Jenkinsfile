@@ -88,36 +88,41 @@ pipeline {
         
         
 
-               stage('Deploy to Kubernetes') {
-            steps {
-                // 🔑 on s’assure d’utiliser ton kubeconfig utilisateur
-                withEnv(["KUBECONFIG=${env.KUBECONFIG}"]) {
-                    bat """
-                    REM ✅ Vérifier l’accès au cluster
-                    kubectl config view
-                    kubectl get nodes
+            stage('Deploy to Kubernetes') {
+    steps {
+        // 🔑 on s’assure d’utiliser ton kubeconfig utilisateur
+        withEnv(["KUBECONFIG=${env.KUBECONFIG}"]) {
+            bat """
+            REM ✅ Vérifier l’accès au cluster
+            kubectl config view
+            kubectl get nodes
 
-                    REM ✅ Démarrer Minikube s’il n’est pas déjà actif
-                    minikube status || minikube start
+            REM ✅ Démarrer Minikube s’il n’est pas déjà actif
+            minikube status || minikube start
 
-                    REM ✅ Déploiement MongoDB
-                    kubectl apply -f k8s/mongo-deployment.yaml
-                    kubectl apply -f k8s/mongo-service.yaml
+            REM ✅ Déploiement MongoDB
+            kubectl apply -f k8s/mongo-deployment.yaml
+            kubectl apply -f k8s/mongo-service.yaml
 
-                    REM ✅ Déploiement backend
-                    kubectl apply -f k8s/back-deployment.yaml
-                    kubectl apply -f k8s/back-service.yaml
+            REM ✅ Déploiement backend
+            kubectl apply -f k8s/back-deployment.yaml
+            kubectl apply -f k8s/back-service.yaml
 
-                    REM ✅ Déploiement frontend
-                    kubectl apply -f k8s/front-deployment.yaml
-                    kubectl apply -f k8s/front-service.yaml
+            REM ✅ Déploiement frontend
+            kubectl apply -f k8s/front-deployment.yaml
+            kubectl apply -f k8s/front-service.yaml
 
-                    REM ✅ Vérifier que tout tourne
-                    kubectl get pods -A
-                    """
-                }
-            }
+            REM ✅ Déploiement de l’Ingress
+            kubectl apply -f k8s/ingress.yaml
+
+            REM ✅ Vérifier que tout tourne
+            kubectl get pods -A
+            kubectl get ingress
+            """
         }
+    }
+}
+
 
     }
 
