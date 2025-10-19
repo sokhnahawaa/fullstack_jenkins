@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend       # Nom du déploiement frontend
+  name: frontend
   labels:
     app: frontend
 spec:
-  replicas: 1          # Nombre de pods frontend
+  replicas: 1
   selector:
     matchLabels:
-      app: frontend    # Label utilisé pour associer le pod au déploiement
+      app: frontend
   template:
     metadata:
       labels:
@@ -16,10 +16,9 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: soxnahawaa/jenkins_front:latest   # Image Docker du frontend (React)
+        image: soxnahawaa/jenkins_front:latest
         ports:
-        - containerPort: 80    # Port exposé par le conteneur (Nginx)
+        - containerPort: 80
         env:
-        - name: VITE_API_URL  
-          value:"http://backend-service:5000/api/smartphones"
-          
+        - name: VITE_API_URL
+          value: "http://backend-service:5000/api/smartphones"
