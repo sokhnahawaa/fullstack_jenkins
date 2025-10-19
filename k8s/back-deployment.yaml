@@ -20,7 +20,7 @@ spec:
         ports:
         - containerPort: 5000   # Port exposé dans le conteneur
         env:
-        - name: MONGODB_URI
+        - name: MONGO_URI
           value: "mongodb://mongo-service:27017/smartphoneDB"  # URL du service MongoDB
         - name: PORT
           value: "5000"   # Port utilisé par le serveur backend
