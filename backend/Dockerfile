@@ -1,23 +1,24 @@
-# Utilise une image Node.js officielle avec Alpine (plus légère)
+# Image Node.js officielle avec Alpine (plus légère)
 FROM node:22.18.0-alpine
 
-# Crée le répertoire de l'application
 WORKDIR /app
 
-# Copie les fichiers de configuration du package
+# Copier les fichiers package
 COPY package*.json ./
 
-# Installe les dépendances 
+# Installer les dépendances 
 RUN npm install
 
-# Copie le reste du code source
+# Copier le reste du code source
 COPY . .
+
+# Copier le .env (si tu veux utiliser des variables locales)
 COPY .env ./
 
-# Expose le port utilisé par l'application
+# Exposer le port utilisé par l'application
 EXPOSE 5000
 
-# Définit la variable d'environnement pour NODE_ENV
+# Définit l'environnement
 ENV NODE_ENV=production
 
 # Commande pour démarrer l'application
