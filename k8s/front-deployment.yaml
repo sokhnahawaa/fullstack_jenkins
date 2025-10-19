@@ -21,4 +21,4 @@ spec:
         - containerPort: 80
         env:
         - name: VITE_API_URL
-          value: "http://backend-service/api/smartphones"
+          value: "http://backend.local/api/smartphones"
