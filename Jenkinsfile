@@ -25,7 +25,7 @@ pipeline {
         //     steps {
         //         withSonarQubeEnv('sonarqube') { // nom du serveur SonarQube configuré dans Jenkins
         //             withCredentials([string(credentialsId: 'awasonarid', variable: 'SONAR_TOKEN')]) {
-        //                 bat '''
+        //                 sh '''
         //                     sonar-scanner \
         //                         -Dsonar.projectKey=Depot_Jenkins \
         //                         -Dsonar.sources=. \
@@ -44,7 +44,7 @@ pipeline {
                 stage('Build front') {
                     steps {
                         dir('front') {
-                            bat "docker build . -t soxnahawaa/jenkins_front:${IMAGE_TAG} -t soxnahawaa/jenkins_front:${LASTEST_TAG}"
+                            sh "docker build . -t soxnahawaa/jenkins_front:${IMAGE_TAG} -t soxnahawaa/jenkins_front:${LASTEST_TAG}"
                         }
                     }
                 }
@@ -52,7 +52,7 @@ pipeline {
                 stage('Build backend') {
                     steps {
                         dir('backend') {
-                            bat "docker build . -t soxnahawaa/jenkins_backend:${IMAGE_TAG} -t soxnahawaa/jenkins_backend:${LASTEST_TAG}"
+                            sh "docker build . -t soxnahawaa/jenkins_backend:${IMAGE_TAG} -t soxnahawaa/jenkins_backend:${LASTEST_TAG}"
                         }
                     }
                 }
@@ -61,7 +61,7 @@ pipeline {
 
       stage('LOGIN TO DOCKER HUB') {
     steps {
-        bat 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
+        sh 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
       }
      }
 
@@ -69,7 +69,7 @@ pipeline {
 
         stage('PUSH IMAGES') {
             steps {
-                bat """
+                sh """
                     docker push soxnahawaa/jenkins_front:${IMAGE_TAG}
                     docker push soxnahawaa/jenkins_front:${LASTEST_TAG}
                     docker push soxnahawaa/jenkins_backend:${IMAGE_TAG}
@@ -80,8 +80,8 @@ pipeline {
 
         // stage('Deploy') {
         //     steps {
-        //         bat 'docker compose down'
-        //         bat 'docker compose up -d'
+        //         sh 'docker compose down'
+        //         sh 'docker compose up -d'
         //     }
         // }
 
@@ -92,7 +92,7 @@ pipeline {
     steps {
         // 🔑 on s’assure d’utiliser ton kubeconfig utilisateur
         withEnv(["KUBECONFIG=${env.KUBECONFIG}"]) {
-            bat """
+            sh """
             REM ✅ Vérifier l’accès au cluster
             kubectl config view
             kubectl get nodes
@@ -162,7 +162,7 @@ pipeline {
         }
 
         always {
-            bat 'docker logout || true'
+            sh 'docker logout || true'
         }
     }
 }
