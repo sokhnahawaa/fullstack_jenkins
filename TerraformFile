@@ -16,8 +16,8 @@ pipeline {
                 checkout scmGit(
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
-                        credentialsId: 'github-jenkins',
-                        url: 'https://github.com/ndiayekhardiata2024/Depot_Jenkins.git'
+                        credentialsId: 'awagithubid',
+                        url: 'https://github.com/sokhnahawaa/fullstack_jenkins.git'
                     ]]
                 )
             }
@@ -32,7 +32,7 @@ pipeline {
                         passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                     ),
                     string(
-                        credentialsId: 'aws-session-token',
+                        credentialsId: 'aws-session-toke',
                         variable: 'AWS_SESSION_TOKEN'
                     )
                 ]) {
