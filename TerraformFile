@@ -50,12 +50,12 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'aws-credentials',
+                        credentialsId: 'aws-credential',
                         usernameVariable: 'AWS_ACCESS_KEY_ID',
                         passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                     ),
                     string(
-                        credentialsId: 'aws-session-token',
+                        credentialsId: 'aws-session-toke',
                         variable: 'AWS_SESSION_TOKEN'
                     )
                 ]) {
